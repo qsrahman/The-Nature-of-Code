@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="utf-8">
+<title>RandomDistribution</title>
+
+<style>
+body, html {
+	margin: 0;
+	padding: 0;
+}
+canvas {
+	border: 1px solid black;
+}
+</style>
+
+</head>
+
+<body>
+
+<div id="stage">
+<canvas id="canvas" width="800" height="200"></canvas>
+</div>
+
+<script src="../../lib/core.js"></script>
+
+<script>
+"use strict";
+
+var app = (function() {
+	var canvas,
+		context,
+		randomCounts = new Array(20);
+
+	function setup() {
+		canvas = document.getElementById('canvas');
+		context = canvas.getContext('2d');
+
+		for(var i = 0; i < randomCounts.length; i++)
+			randomCounts[i] = 0;
+	}
+
+	function update(dt) {
+		dt = dt || 1.0;
+
+		// Pick a random number and increase the count
+		var index = core.randomInt(randomCounts.length-1);
+		randomCounts[index]++;
+	}
+
+	function drawFrame() {
+		var w = canvas.width / randomCounts.length;
+
+		// Draw a rectangle to graph results
+		context.lineWidth = "2";
+		context.strokeStyle = "gray";
+		context.fillStyle = "lightgray";
+
+		for (var x = 0; x < randomCounts.length; x++) {
+			context.fillRect(x*w, canvas.height - randomCounts[x], w - 1, randomCounts[x]);
+			context.strokeRect(x*w, canvas.height - randomCounts[x], w - 1, randomCounts[x]);
+		}
+	}
+
+	function run() {
+		update();
+		drawFrame();
+		requestAnimationFrame(run, canvas);
+	}
+
+	return {
+		canvas: canvas,
+		context: context,
+		ctx: context,
+		setup: setup,
+		run: run
+	};
+})();
+
+window.onload = function () {
+	app.setup();
+	app.run();
+};
+
+</script>
+
+</body>
+</html>

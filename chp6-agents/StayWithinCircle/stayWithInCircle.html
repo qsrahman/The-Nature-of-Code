@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="utf-8">
+<title></title>
+
+<style>
+* {
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	overflow: hidden;
+}
+
+#canvas {
+	border: 1px solid black;
+}
+</style>
+
+</head>
+
+<body>
+
+<canvas id="canvas" width="640" height="320"></canvas>
+
+<script src="../../lib/core.js"></script>
+<script src="../../lib/vector.js"></script>
+<script src="../../lib/qcanvas.js"></script>
+<script src="vehicle.js"></script>
+
+<script>
+"use strict";
+
+var	v,
+	debug = true,
+	futureLocation,
+	circleLocation,
+	circleRadius;
+
+function setup(q) {
+	var midX = q.canvas.width / 2,
+		midY = q.canvas.height / 2;
+
+	circleLocation = new Vector(midX, midY);
+	circleRadius = midY - 25;
+
+	v = new Vehicle(new Vector(midX, midY/2), new Vector(3, -2));
+}
+
+function mouseDown(q) {
+	debug = !debug;
+}
+
+function update(q, dt) {
+	futureLocation = v.boundries(circleLocation, circleRadius, q.context);
+	v.update(dt);
+}
+
+function draw(q, dt) {
+	q.clear();
+	v.draw(q.context);
+
+	q.context.beginPath();
+	q.context.arc(futureLocation.x, futureLocation.y, 3, 0, 2*Math.PI);
+	q.context.fillStyle = "#ff0000";
+	q.context.fill();
+
+	if(debug) {
+		q.context.beginPath();
+		q.context.arc(circleLocation.x, circleLocation.y, circleRadius, 0, 2*Math.PI);
+		q.context.stroke();
+	}
+}
+
+window.onload = function() {
+	var q = new qCanvas(
+		{
+			canvasid: 'canvas',
+
+			setup: setup,
+			update: update,
+			draw: draw,
+
+			mouseDown: mouseDown,
+
+			animate: true
+		});
+};
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="utf-8">
+<title></title>
+
+<style>
+* {
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	overflow: hidden;
+}
+
+#canvas {
+	background-color: black;
+}
+</style>
+
+</head>
+
+<body>
+
+<canvas id="canvas" width="640" height="480"></canvas>
+
+<script src="../js/core.js"></script>
+<script src="../js/vector.js"></script>
+<script src="../js/qcanvas.js"></script>
+<script src="vehicle.js"></script>
+
+<script>
+"use strict";
+
+var	ps;
+
+function setup(q) {
+	var midX = q.canvas.width / 2,
+		midY = q.canvas.height / 2;
+
+}
+
+function update(q, dt) {
+}
+
+function draw(q, dt) {
+	q.clear();
+}
+
+window.onload = function() {
+	var q = new qCanvas(
+		{
+			canvasid: 'canvas',
+
+			setup: setup,
+			update: update,
+			draw: draw,
+
+			animate: true
+		});
+};
+
+</script>
+
+</body>
+</html>
