@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="utf-8">
+<title></title>
+
+<style>
+body, html {
+	margin: 0;
+	padding: 0;
+}
+</style>
+
+</head>
+
+<body>
+
+<div id="stage">
+<canvas id="canvas" width="800" height="200"></canvas>
+</div>
+
+<script src="../../lib/core.js"></script>
+
+<script>
+"use strict";
+
+function Walker (x, y) {
+	this.x = x;
+	this.y = y;
+}
+
+Walker.prototype.display = function(context) {
+	context.fillStyle = '#000';
+	context.fillRect(this.x, this.y, 2, 2);
+};
+
+Walker.prototype.step = function(width, height) {
+	var r = Math.random();
+
+	if(r < 0.4) { 		// chance of moving right: 40%
+		this.x++;
+	}
+	else if(r < 0.6) { 	// chance of moving left: 20%
+		this.x--;
+	}
+	else if(r < 0.8) { 	// chance of moving down: 20%
+		this.y++;
+	}
+	else { 				// chance of moving up: 20%
+		this.y--;
+	}
+	this.x = core.clamp(this.x, 0, width - 1);
+	this.y = core.clamp(this.y, 0, height - 1);
+};
+
+var app = (function() {
+	var canvas,
+		context,
+		w;
+
+	function setup() {
+		canvas = document.getElementById('canvas');
+		context = canvas.getContext('2d');
+
+		w = new Walker(canvas.width/2, canvas.height/2);
+	}
+
+	function update(dt) {
+		dt = dt || 1.0;
+		w.step(canvas.width, canvas.height);
+	}
+
+	function drawFrame() {
+		//context.clearRect(0, 0, canvas.width, canvas.height);
+		w.display(context);
+	}
+
+	function run() {
+		update();
+		drawFrame();
+		requestAnimationFrame(run, canvas);
+	}
+
+	return {
+		canvas: canvas,
+		context: context,
+		ctx: context,
+		setup: setup,
+		run: run
+	};
+})();
+
+window.onload = function () {
+	app.setup();
+	app.run();
+};
+
+</script>
+
+</body>
+</html>

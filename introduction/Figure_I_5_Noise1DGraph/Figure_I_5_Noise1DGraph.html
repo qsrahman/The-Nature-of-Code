@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="utf-8">
+<title>Noise1DGraph</title>
+
+<style>
+body, html {
+	margin: 0;
+	padding: 0;
+}
+</style>
+
+</head>
+
+<body>
+
+<div id="stage">
+<canvas id="canvas" width="400" height="200"></canvas>
+</div>
+
+<script src="../../lib/core.js"></script>
+
+<script>
+"use strict";
+
+var app = (function() {
+	var canvas,
+		context,
+		vertex = [];
+		t = 0;
+
+	function setup() {
+		canvas = document.getElementById('canvas');
+		context = canvas.getContext('2d');
+	}
+
+	function update(dt) {
+		dt = dt || 1.0;
+	}
+
+	function drawFrame() {
+		context.clearRect(0, 0, canvas.width, canvas.height);
+		var xoff = t;
+		context.fillStyle = "black";
+		context.lineWidth = "2";
+		context.beginPath();
+		for (var i = 0; i < canvas.width; i++) {
+			var y = core.noise(xoff, 0, 0)*canvas.height;
+			xoff += 0.01;
+			context.moveTo(i, y);
+			context.lineTo(0, y);
+			// context.fillRect(i, y, 1, 1);
+			// vertex(i,y);
+		}
+		context.stroke();
+		t += 0.01;
+	}
+
+	function run() {
+		update();
+		drawFrame();
+		requestAnimationFrame(run, canvas);
+	}
+
+	return {
+		canvas: canvas,
+		context: context,
+		ctx: context,
+		setup: setup,
+		run: run
+	};
+})();
+
+window.onload = function () {
+	app.setup();
+	app.run();
+};
+
+</script>
+
+</body>
+</html>

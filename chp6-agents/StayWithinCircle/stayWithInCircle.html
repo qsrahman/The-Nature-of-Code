@@ -55,12 +55,10 @@ function mouseDown(q) {
 }
 
 function update(q, dt) {
+	q.clear();
 	futureLocation = v.boundries(circleLocation, circleRadius, q.context);
 	v.update(dt);
-}
 
-function draw(q, dt) {
-	q.clear();
 	v.draw(q.context);
 
 	q.context.beginPath();
@@ -82,7 +80,6 @@ window.onload = function() {
 
 			setup: setup,
 			update: update,
-			draw: draw,
 
 			mouseDown: mouseDown,
 

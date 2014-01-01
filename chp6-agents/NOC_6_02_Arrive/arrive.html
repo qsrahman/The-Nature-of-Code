@@ -45,14 +45,14 @@ function setup(q) {
 }
 
 function update(q, dt) {
+	q.clear();
 	mouse.setXY(q.mouse.x, q.mouse.y);
 	v.arrive(mouse);
 	v.update(dt);
+	v.draw(q.context);
 }
 
 function draw(q, dt) {
-	q.clear();
-	v.draw(q.context);
 }
 
 window.onload = function() {

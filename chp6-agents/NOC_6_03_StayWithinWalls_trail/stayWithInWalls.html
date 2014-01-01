@@ -50,14 +50,10 @@ function mouseDown(q) {
 }
 
 function update(q, dt) {
+	q.clear();
 	v.boundries(q.canvas.width, q.canvas.height, d);
 	v.update(dt);
-}
-
-function draw(q, dt) {
-	q.clear();
 	v.draw(q.context);
-
 	if(debug) {
 		q.context.strokeRect(d, d, q.canvas.width - d*2, q.canvas.height - d*2);
 	}
@@ -70,7 +66,6 @@ window.onload = function() {
 
 			setup: setup,
 			update: update,
-			draw: draw,
 
 			mouseDown: mouseDown,
 

@@ -50,12 +50,9 @@ function mouseDown(q) {
 }
 
 function update(q, dt) {
+	q.clear();
 	v.boundries(q.canvas.width, q.canvas.height, d);
 	v.update(dt);
-}
-
-function draw(q, dt) {
-	q.clear();
 	v.draw(q.context);
 
 	if(debug) {
@@ -70,7 +67,6 @@ window.onload = function() {
 
 			setup: setup,
 			update: update,
-			draw: draw,
 
 			mouseDown: mouseDown,
 

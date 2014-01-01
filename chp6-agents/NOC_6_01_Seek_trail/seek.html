@@ -45,13 +45,10 @@ function setup(q) {
 }
 
 function update(q, dt) {
+	q.clear();
 	mouse.setXY(q.mouse.x, q.mouse.y);
 	v.seek(mouse);
 	v.update(dt);
-}
-
-function draw(q, dt) {
-	q.clear();
 	v.draw(q.context);
 }
 
@@ -62,7 +59,6 @@ window.onload = function() {
 
 			setup: setup,
 			update: update,
-			draw: draw,
 
 			animate: true
 		});

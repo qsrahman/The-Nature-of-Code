@@ -16,12 +16,12 @@ Vehicle.prototype.applyForce = function(force) {
 	this.force.addEquals(force);
 };
 
-Vehicle.prototype.update = function() {
+Vehicle.prototype.update = function(dt) {
 	var acceleration = this.force.div(this.mass);
 
-	this.velocity.addEquals(acceleration);
+	this.velocity.addEquals(acceleration.mult(dt));
 
-	this.location.addEquals(this.velocity);
+	this.location.addEquals(this.velocity.mult(dt));
 
 	this.rotation = this.velocity.heading();
 

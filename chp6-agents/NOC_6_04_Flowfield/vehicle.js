@@ -1,13 +1,13 @@
-function Vehicle(loc, vel, mass, size) {
+function Vehicle(loc, ms, mf, vel, mass, size) {
 	this.location = (loc === undefined) ? new Vector() : loc.get();
 	this.velocity = (vel === undefined) ? new Vector() : vel.get();
 	this.force = new Vector();
 
 	this.mass = mass || 1;
-	this.size = size || 5.5;
+	this.size = size || 3;
 	this.rotation = 0;
-	this.maxspeed = 4;
-	this.maxforce = 0.1;
+	this.maxspeed = ms || 4;
+	this.maxforce = mf || 0.1;
 
 	this.trail = [];
 }
@@ -34,13 +34,20 @@ Vehicle.prototype.update = function() {
 	}
 };
 
-Vehicle.prototype.seek = function(target) {
-	var desired = target.sub(this.location);
-	desired.normalize();
+Vehicle.prototype.follow = function(flow) {
+	// What is the vector at that spot in the flow field?
+	var desired = flow.lookup(this.location);
+
+	// Scale it up by maxspeed
 	desired.multEquals(this.maxspeed);
-	desired.subEquals(this.velocity); 	// Reynolds’s formula for steering force
-	desired.limit(this.maxforce);
-	this.applyForce(desired);
+
+	// Steering is desired minus velocity
+	var steer = Vector.sub(desired, this.velocity);
+
+	// Limit to maximum steering force
+	steer.limit(this.maxforce);
+
+	this.applyForce(steer);
 };
 
 Vehicle.prototype.checkEdges = function(width, height) {
@@ -60,9 +67,9 @@ Vehicle.prototype.checkEdges = function(width, height) {
 };
 
 Vehicle.prototype.draw = function(ctx) {
-	this.trail.forEach(function(p) {
-		ctx.fillRect(p.x, p.y, 1, 1);
-	});
+	// this.trail.forEach(function(p) {
+	// 	ctx.fillRect(p.x, p.y, 1, 1);
+	// });
 
 	ctx.save();
 	ctx.translate(this.location.x, this.location.y);

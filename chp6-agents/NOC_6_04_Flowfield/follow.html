@@ -30,26 +30,34 @@ body {
 <script src="../../lib/vector.js"></script>
 <script src="../../lib/qcanvas.js"></script>
 <script src="vehicle.js"></script>
+<script src="flowfield.js"></script>
 
 <script>
 "use strict";
 
-var	v,
-	mouse = new Vector();
+var	vehicles = [],
+	flowfield;
 
 function setup(q) {
 	var midX = q.canvas.width / 2,
 		midY = q.canvas.height / 2;
 
-	v = new Vehicle(new Vector(midX, midY));
+	flowfield = new FlowField(q.canvas.width, q.canvas.height, 20);
+
+	for(var i = 0; i < 120; i++) {
+		vehicles.push(new Vehicle(new Vector(core.random(q.canvas.width), core.random(q.canvas.height)), core.random(2, 5), core.random(0.1, 0.5)));
+	}
 }
 
 function update(q, dt) {
 	q.clear();
-	mouse.setXY(q.mouse.x, q.mouse.y);
-	v.seek(mouse);
-	v.update(dt);
-	v.draw(q.context);
+	flowfield.draw(q.context);
+	vehicles.forEach(function(v) {
+		v.follow(flowfield);
+		v.update(dt);
+		v.checkEdges(q.canvas.width, q.canvas.height);
+		v.draw(q.context);
+	});
 }
 
 window.onload = function() {

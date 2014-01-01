@@ -18,6 +18,7 @@ Vehicle.prototype.update = function() {
 	var acceleration = this.force.div(this.mass);
 
 	this.velocity.addEquals(acceleration);
+	this.velocity.limit(this.maxspeed);
 
 	this.location.addEquals(this.velocity);
 
